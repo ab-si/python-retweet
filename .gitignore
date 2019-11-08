@@ -1,0 +1,4 @@
+*.pc
+*.pyc
+*.pyo
+__pycache__
