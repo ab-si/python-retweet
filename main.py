@@ -1,6 +1,4 @@
-'''
 #!/Library/Frameworks/Python.framework/Versions/3.6/bin/python3
-'''
 
 import tweepy
 from time import sleep
@@ -9,15 +7,28 @@ import datetime
 from config import create_api
 
 def retweet(api, keywords):
-    for tweet in tweepy.Cursor(api.search, q=('#leaders_in4thIR OR #leadership OR #LeadershipDevelopment -filter:retweer'), lang='en').items(1):
+    count = 0
+    tweet = tweepy.Cursor(api.search, q=('#leaders_in4thIR OR #leadership OR #LeadershipDevelopment -filter:retweer'), lang='en').items(10)
+    for t in tweet:
         try:
-            print('\nTweet by: @' + tweet.user.screen_name)
-            print('Time : ', datetime.datetime.now())
-            tweet.retweet()
-        except tweepy.TweepError as e:
+            if t.retweet_count >= 10:
+                print('\nTweet by: @' + t.user.screen_name)
+                print('Time : ', datetime.datetime.now())
+                t.retweet()
+                count += 1
+        except t.TweepError as e:
             print(e.reason)
         except StopIteration:
             break
+    if count == 0:
+        tweet = tweepy.Cursor(api.search, q=('#leaders_in4thIR OR #leadership OR #LeadershipDevelopment -filter:retweer'), lang='en').items(1)
+        for t in tweet:
+            try:
+                print('\nTweet by: @' + t.user.screen_name)
+                print('Time : ', datetime.datetime.now())
+                t.retweet()
+            except t.TweepError as e:
+                print(e.reason)
 
 def favourite(api, keywords):
     for tweet in tweepy.Cursor(api.search, q=('#liverpool'),lang='en').items(1):
