@@ -18,7 +18,7 @@ def retweet(api, keywords):
                     print('Time : ', datetime.datetime.now())
                     t.retweet()
                     count += 1
-            except t.TweepError as e:
+            except tweepy.TweepError as e:
                 print(e.reason)
             except StopIteration:
                 break
